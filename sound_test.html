@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Recording Tones Mockup</title>
+  </head>
+  <body>
+    <h1>Press a button to play a tone.</h1>
+    <div id="accept-div" style="width: 800px; height: 200px;"> 
+      <audio id="accept_tone" src="sounds/1000.wav"></audio>
+      <button style="width: 20%; height: 20%; background-color:Green;color:white;width:150px;height:40px;" onclick="play('accept_tone')"><strong>Accept</strong></button> 
+    </div> 
+    <div id="reject-div" style="width: 800px; height: 200px;">
+      <audio id="reject_tone" src="sounds/440.wav"></audio>
+      <button style="width: 20%; height: 20%; background-color:Red;color:white;width:150px;height:40px;" onclick="play('reject_tone')"><strong>Reject</strong></button> 
+    </div>
+    <div id="ohshoot-div" style="width: 800px; height: 200px;"> 
+      <audio id="ohshoot_tone" src="sounds/175.wav"></audio>
+      <button style="width: 20%; height: 20%; background-color:Orange;color:white;width:150px;height:40px;" onclick="play('ohshoot_tone')"><strong>Oh Shoot!</strong></button> 
+    </div> 
+  </body>
+</html>
+
+
+<script>
+    function PlaySound(melody) {
+        var path = "sounds/"
+        var snd = new Audio(path + melody + ".wav");
+        snd.play();
+    }
+</script>
+
+
+
+<script>
+  function play(tone_id) {
+      var sounds = document.getElementsByTagName('audio');
+      for(i=0; i<sounds.length; i++) sounds[i].pause();
+      var audio = document.getElementById(tone_id);
+      audio.play();
+  }
+</script>
