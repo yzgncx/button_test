@@ -2,20 +2,40 @@
 <html>
   <head>
     <title>Recording Tones Mockup</title>
+    <style>
+      .button {
+	  width:140px;
+	  height:40px;
+	  background-color: #ffffff;
+	  border: 2px solid #333333;
+	  color: white;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+      }
+
+      .button_accept {background-color: #48bf3f;}
+      .button_accept:active {background-color: #276622;}
+      .button_reject {background-color: #ff6363;}
+      .button_reject:active {background-color: #b33434;}
+      .button_other {background-color:  #ffa024;}
+      .button_other:active {background-color:  #bf781b;}
+    </style>
   </head>
   <body>
     <h1>Press a button to play a tone.</h1>
     <div id="accept-div" style="width: 800px; height: 200px;"> 
-      <audio id="accept_tone" src="sounds/1000.wav"></audio>
-      <button style="width: 20%; height: 20%; background-color:Green;color:white;width:150px;height:40px;" onclick="play('accept_tone')"><strong>Accept</strong></button> 
+      <audio id="accept_tone" src="sounds/440.wav"></audio>
+      <button class="button button_accept" onclick="play('accept_tone')"><strong>Accept</strong></button> 
     </div> 
     <div id="reject-div" style="width: 800px; height: 200px;">
       <audio id="reject_tone" src="sounds/square_82.4.wav"></audio>
-      <button style="width: 20%; height: 20%; background-color:Red;color:white;width:150px;height:40px;" onclick="play('reject_tone')"><strong>Reject</strong></button> 
+      <button class="button button_reject" onclick="play('reject_tone')"><strong>Reject</strong></button> 
     </div>
     <div id="ohshoot-div" style="width: 800px; height: 200px;"> 
       <audio id="ohshoot_tone" src="sounds/175.wav"></audio>
-      <button style="width: 20%; height: 20%; background-color:Orange;color:white;width:150px;height:40px;" onclick="play('ohshoot_tone')"><strong>Oh Shoot!</strong></button> 
+      <button class="button button_other" onclick="play('ohshoot_tone')"><strong>Oh Shoot!</strong></button> 
     </div> 
   </body>
 </html>
