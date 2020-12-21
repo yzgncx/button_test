@@ -1,0 +1,27 @@
+var timestamps=new Array
+
+function download(filename) {
+    text=timestamps.join("\n")
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function addTimeStamp(action) {
+    line=action+'\t'+(new Date().getTime())
+    timestamps.push(line);
+}
+
+function play(tone_id) {
+    var sounds = document.getElementsByTagName('audio');
+    for(i=0; i<sounds.length; i++) sounds[i].pause();
+    var audio = document.getElementById(tone_id);
+    audio.play();
+}
