@@ -1,3 +1,82 @@
+var lines = [];
+cur_pos = 0
+
+window.onload = function() {
+
+    const realFileBtn = document.getElementById("file");
+    const customBtn = document.getElementById("custom-button");
+    const customTxt = document.getElementById("custom-text");
+    const lineNumber = document.getElementById("line_number");
+    
+    customBtn.addEventListener("click", function() {
+	realFileBtn.click();
+    });
+
+    realFileBtn.addEventListener("change", function() {
+	if (realFileBtn.value) {
+	    customTxt.innerHTML = realFileBtn.value.match(
+		/[\/\\]([\w\d\s\.\-\(\)]+)$/
+	    )[1];
+	} else {
+	    customTxt.innerHTML = "No file selected.";
+	}
+    });
+
+    lineNumber.addEventListener("keyup", function(event) {
+	if (event.keyCode === 13) {
+	    update_position(document.getElementById("line_number").value);
+	}
+    });
+    
+    document.getElementById('file').onchange = function(){
+	var file = this.files[0];
+	var reader = new FileReader();
+	reader.onload = function(progressEvent){
+	    // Entire file
+	    //console.log(this.result);
+
+	    // By lines
+	    lines = this.result.split('\n');
+	    //for(var line = 0; line < lines.length; line++){
+	    //  console.log(lines[line]);
+	    //}
+	};
+	reader.readAsText(file);
+    };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// TEXT HANDLER FUNCTIONS /////////////////////////////////////////
+
+function get_line(pos) {
+    if (pos >= 0 && pos < lines.length) { return lines[pos]; }
+    else { return ""; }
+}
+
+function update_position(pos) {
+    if (pos >= lines.length || pos < 0) {
+	return -1;
+    }
+    cur_pos = Number(pos);
+    document.getElementById("prev_line").innerHTML = (cur_pos-1) + "&emsp;&emsp;" + get_line(pos-1);
+    document.getElementById("cur_line").innerHTML = (cur_pos) + "&emsp;&emsp;" + get_line(pos);
+    document.getElementById("next_line").innerHTML = (cur_pos+1) + "&emsp;&emsp;" + get_line(pos+1);
+    document.getElementById("line_number").value = cur_pos;
+    return 0;
+}
+
+function increment_position() {
+    update_position(cur_pos+1);
+}
+
+function decrement_position() {
+    update_position(cur_pos-1);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 var timestamps=new Array
 
 function formatDate(date) {
@@ -46,3 +125,4 @@ function play(tone_id) {
     var audio = document.getElementById(tone_id);
     audio.play();
 }
+

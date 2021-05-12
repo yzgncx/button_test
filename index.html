@@ -2,50 +2,127 @@
 <html>
   <script type="text/javascript" src="js/scripts.js"></script>
   <head>
-    <title>Recording Tones Mockup</title>
     <style>
-      .button {
-	  width:140px;
-	  height:40px;
-	  background-color: #ffffff;
-	  border: 2px solid #333333;
-	  color: white;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-size: 16px;
+      /*Remove arrows from number box*/
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
       }
+      /* Firefox */
+      input[type=number] {
+	  -moz-appearance: textfield;
+      }
+      
+      .center {
+	  margin: auto;
+	  width: 75%;
+	  border: 0px solid green;
+	  padding: 10px;
+      } 
+      .container {
+	  vertical-align: bottom;
+	  width: 45%;
+      }
+      .text_lines {
+	  padding: 10px;
+	  border: 1px solid #000;
+	  border-radius: 5px;
+      }
+      .text_line { font-size: 20px } 
+      .text_line:after { content: '\200b'; }
+      .text_unfocused {color: #D5D7DD; }
+      .button {
+	  padding: 10px;
+	  color: white;
+	  background-color: #85929E;
+	  border: 1px solid #000;
+	  border-radius: 5px;
+	  cursor: pointer;
+      }
+      .button_big {
+	  padding: 20px;
+      }
+      .button:hover {background-color: #AEB6BF;}
+      .button:active {background-color: #85929E;}
+      .button_accept {background-color: #82E0AA;}
+      .button_accept:hover {background-color: #ABEBC6;}
+      .button_accept:active {background-color: #82E0AA;}
+      .button_reject {background-color: #F1948A;}
+      .button_reject:hover {background-color: #F5B7B1;}
+      .button_reject:active {background-color: #F1948A;}
+      .button_other {background-color: #F8C471;}
+      .button_other:hover {background-color: #FAD7A0;}
+      .button_other:active {background-color: #F8C471;}
+      .button_download {background-color: #85929E;}
+      .button_download:hover {background-color: #AEB6BF;}
+      .button_download:active {background-color: #85929E;}
 
-      .button_accept {background-color: #48bf3f;}
-      .button_accept:active {background-color: #276622;}
-      .button_reject {background-color: #ff6363;}
-      .button_reject:active {background-color: #b33434;}
-      .button_other {background-color:  #ffa024;}
-      .button_other:active {background-color:  #bf781b;}
-      .button_download {background-color: #999999}
-      .button_download:active {background-color: #808080}
+      
+      .custom-text {
+	  margin-left: 10px;
+	  font-family: sans-serif;
+	  color: #aaa;
+      }
     </style>
   </head>
+  
   <body>
-    <h1>Press a button to play a tone.</h1>
-    <div id="accept-div" style="width: 800px; height: 200px;"> 
-      <audio id="accept_tone" src="sounds/440.wav"></audio>
-      <button class="button button_accept" onclick="addTimeStamp('accept');play('accept_tone')"><strong>Accept</strong></button>
-    </div> 
-    <div id="reject-div" style="width: 800px; height: 200px;">
-      <audio id="reject_tone" src="sounds/square_82.4.wav"></audio>
-      <button class="button button_reject" onclick="addTimeStamp('reject');play('reject_tone')"><strong>Reject</strong></button>
+
+    <br>
+    
+    <div class="center">
+      <input type="file" id="file" hidden="hidden" />
+      <button type="button" id="custom-button" class="button"><strong>Choose a script file</strong></button>
+      <span id="custom-text" class="custom-text">No file selected.</span>
     </div>
-    <div id="ohshoot-div" style="width: 800px; height: 200px;"> 
-      <audio id="ohshoot_tone" src="sounds/175.wav"></audio>
-      <button class="button button_other" onclick="addTimeStamp('ohshoot');play('ohshoot_tone')"><strong>Oh shoot!</strong></button>
+
+    <br>
+    
+    <div class="center" id="session-div">
+      <audio id="tone_440" src="sounds/440.wav"></audio>
+      <button class="button button_big" onclick="play('tone_440');update_position(0);"><strong>Press button to start session</strong></button>
     </div>
-    <div id="download-div" style="width: 800px; height: 200px;"> 
-      <button class="button button_download" onclick="download(document.getElementById('text').value)"><strong>Download</strong></button>
-      <div>Session notes</div>
-      <textarea id="text"></textarea>
+    
+    <br><br>
+
+    <div class="center">
+      <span id="accept-span" style="margin-right:1.25em;"> 
+	<button class="button button_big button_accept" onclick="addTimeStamp('accept'); increment_position();"><strong>Accept</strong></button>
+      </span>
+      <span id="reject-span" style="margin-right:1.25em;">
+	<button class="button button_big button_reject" onclick="addTimeStamp('reject');"><strong>Reject</strong></button>
+      </span>
+      <span id="ohshoot-span" style="margin-right:1.25em;"> 
+	<button class="button button_big button_other" onclick="addTimeStamp('ohshoot');"><strong>Oh shoot!</strong></button>
+      </span>
     </div>
-   </body>
+    
+    <br><br>
+    
+    <div class="center text_lines">
+      <div class="text_line text_unfocused" id="prev_line"></div>
+      <div class="text_line" id="cur_line"></div>
+      <div class="text_line text_unfocused" id="next_line"></div>
+
+      <span id="next_button">
+        <button class="button" style="float: right;margin-right:1.25em;" onclick="increment_position();"><strong>></strong></button>
+      </span>
+      <input id="line_number" type="number" style="width:50px; height:31px; float: right;margin-right:1.25em; text-align: center;"></input>
+      <span id="prev_button">
+	<button class="button" style="float: right;margin-right:1.25em;" onclick="decrement_position();"><strong><</strong></button>
+      </span>
+    </div>
+      
+    <br><br>
+    
+    <div id="download-div" class="center"> 
+      <span> Session notes: </span>
+      <textarea class="container" id="text"></textarea>
+      <button class="button button_download" style="margin-left:1.25em" onclick="download(document.getElementById('text').value)"><strong>Download</strong></button>
+    </div>
+
+    
+  </body>
 </html>
-
-

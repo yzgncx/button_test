@@ -1,7 +1,96 @@
+var lines = [];
+cur_pos = 0
+
+window.onload = function() {
+
+const realFileBtn = document.getElementById("file");
+const customBtn = document.getElementById("custom-button");
+const customTxt = document.getElementById("custom-text");
+
+customBtn.addEventListener("click", function() {
+  realFileBtn.click();
+});
+
+realFileBtn.addEventListener("change", function() {
+  if (realFileBtn.value) {
+    customTxt.innerHTML = realFileBtn.value.match(
+      /[\/\\]([\w\d\s\.\-\(\)]+)$/
+    )[1];
+  } else {
+    customTxt.innerHTML = "No file selected.";
+  }
+});
+
+document.getElementById('file').onchange = function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(progressEvent){
+	// Entire file
+	//console.log(this.result);
+
+	// By lines
+	lines = this.result.split('\n');
+	//for(var line = 0; line < lines.length; line++){
+	//  console.log(lines[line]);
+	//}
+    };
+    reader.readAsText(file);
+    update_position(0)
+};
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// TEXT HANDLER FUNCTIONS /////////////////////////////////////////
+
+function get_line(pos) {
+    if (cur_pos >= 0 && cur_pos < lines.length) { return lines[pos]; }
+    else { return ""; }
+}
+
+function update_position(pos) {
+    if (cur_pos >= lines.length || cur_pos < 0) {
+	return -1;
+    }
+    cur_pos = pos;
+    document.getElementById("prev_line").innerHTML = get_line(pos-1);
+    document.getElementById("cur_line").innerHTML = get_line(pos);
+    document.getElementById("next_line").innerHTML = get_line(pos+1);
+    return 0;
+}
+
+function increment_position() {
+    update_position(cur_pos+1);
+}
+
+function decrement_position() {
+    update_position(cur_pos-1);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 var timestamps=new Array
 
-function download(filename) {
-    text=timestamps.join("\n")
+function formatDate(date) {
+    var d = new Date(date),
+	month = '' + (d.getMonth() + 1),
+	day = '' + d.getDate(),
+	year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('');
+}
+
+    
+function download(sessionNotes) {
+    var filename=formatDate((new Date()))+'.txt';
+    var timestamps_copy=timestamps.slice(0);
+    var text=sessionNotes+'\n\n'+timestamps.join("\n");
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
@@ -12,6 +101,10 @@ function download(filename) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+function foo() {
+    console.log(timestamps)
 }
 
 function addTimeStamp(action) {
@@ -25,3 +118,4 @@ function play(tone_id) {
     var audio = document.getElementById(tone_id);
     audio.play();
 }
+
