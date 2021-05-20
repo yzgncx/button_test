@@ -41,11 +41,21 @@
 	  border-radius: 5px;
 	  cursor: pointer;
       }
+      .button:hover {background-color: #AEB6BF;}
+      .button:active {background-color: #85929E;}
       .button_big {
 	  padding: 20px;
       }
-      .button:hover {background-color: #AEB6BF;}
-      .button:active {background-color: #85929E;}
+      .button_disabled {
+	  color: #C7D1D8;
+	  background-color: #85929E;
+	  cursor: default;
+      }
+      .button_disabled:hover {background-color:#85929E;}
+      .button_disabled:active {
+	  background-color: #85929E;
+	  cursor: not-allowed;
+      }
       .button_accept {background-color: #82E0AA;}
       .button_accept:hover {background-color: #ABEBC6;}
       .button_accept:active {background-color: #82E0AA;}
@@ -69,12 +79,12 @@
   </head>
   
   <body>
-
+    
     <br>
     
     <div class="center">
       <input type="file" id="file" hidden="hidden" />
-      <button type="button" id="custom-button" class="button"><strong>Choose a script file</strong></button>
+      <button type="button" id="custom-button" class="button" onclick="unlock_start_session();"><strong>Choose a script file</strong></button>
       <span id="custom-text" class="custom-text">No file selected.</span>
     </div>
 
@@ -82,20 +92,20 @@
     
     <div class="center" id="session-div">
       <audio id="tone_440" src="sounds/440.wav"></audio>
-      <button class="button button_big" onclick="play('tone_440');update_position(0);"><strong>Press button to start session</strong></button>
+      <button id="session-button" class="button button_big button_disabled" onclick=""><strong>Press button to start session</strong></button>
     </div>
     
     <br><br>
 
     <div class="center">
       <span id="accept-span" style="margin-right:1.25em;"> 
-	<button class="button button_big button_accept" onclick="addTimeStamp('accept'); increment_position();"><strong>Accept</strong></button>
+	<button id="accept-button" class="button button_big button_disabled"><strong>Accept</strong></button>
       </span>
       <span id="reject-span" style="margin-right:1.25em;">
-	<button class="button button_big button_reject" onclick="addTimeStamp('reject');"><strong>Reject</strong></button>
+	<button id="reject-button" class="button button_big button_disabled"><strong>Reject</strong></button>
       </span>
       <span id="ohshoot-span" style="margin-right:1.25em;"> 
-	<button class="button button_big button_other" onclick="addTimeStamp('ohshoot');"><strong>Oh shoot!</strong></button>
+	<button id="other-button" class="button button_big button_disabled"><strong>Oh shoot!</strong></button>
       </span>
     </div>
     
@@ -120,7 +130,7 @@
     <div id="download-div" class="center"> 
       <span> Session notes: </span>
       <textarea class="container" id="text"></textarea>
-      <button class="button button_download" style="margin-left:1.25em" onclick="download(document.getElementById('text').value)"><strong>Download</strong></button>
+      <button id="download-button" class="button button_disabled" style="margin-left:1.25em"><strong>Download</strong></button>
     </div>
 
     

@@ -46,6 +46,38 @@ window.onload = function() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// CSS UPDATER FUNCTIONS //////////////////////////////////////////
+
+function unlock_start_session() {
+    var sessionButton=document.getElementById("session-button");
+    sessionButton.className = "button button_big";
+    sessionButton.onclick = function () { play('tone_440');
+					  update_position(0);
+					  unlock_timestamps();
+					}
+}
+
+function unlock_timestamps() {
+    var acceptButton=document.getElementById("accept-button");
+    acceptButton.className= "button button_big button_accept";
+    acceptButton.onclick = function () { addTimeStamp('accept');
+					 increment_position();
+    }
+    var rejectButton=document.getElementById("reject-button");
+    rejectButton.className= "button button_big button_reject";
+    rejectButton.onclick = function () { addTimeStamp('reject');
+    }
+    var otherButton=document.getElementById("other-button");
+    otherButton.className= "button button_big button_other";
+    otherButton.onclick = function () { addTimeStamp('ohshoot');
+    }
+    var downloadButton=document.getElementById("download-button");
+    downloadButton.className= "button"
+    downloadButton.onClick = function () { download(document.getElementById('text').value)
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// TEXT HANDLER FUNCTIONS /////////////////////////////////////////
 
 function get_line(pos) {
