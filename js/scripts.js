@@ -60,16 +60,16 @@ function unlock_start_session() {
 function unlock_timestamps() {
     var acceptButton=document.getElementById("accept-button");
     acceptButton.className= "button button_big button_accept";
-    acceptButton.onclick = function () { addTimeStamp('accept');
+    acceptButton.onclick = function () { addTimeStamp(this,'accept');
 					 increment_position();
     }
     var rejectButton=document.getElementById("reject-button");
     rejectButton.className= "button button_big button_reject";
-    rejectButton.onclick = function () { addTimeStamp('reject');
+    rejectButton.onclick = function () { addTimeStamp(this,'reject');
     }
     var otherButton=document.getElementById("other-button");
     otherButton.className= "button button_big button_other";
-    otherButton.onclick = function () { addTimeStamp('ohshoot');
+    otherButton.onclick = function () { addTimeStamp(this,'ohshoot');
     }
     var downloadButton=document.getElementById("download-button");
     downloadButton.className= "button"
@@ -146,9 +146,13 @@ function foo() {
     console.log(timestamps)
 }
 
-function addTimeStamp(action) {
+function addTimeStamp(obj,action) {
     line=action+'\t'+(new Date().getTime())
     timestamps.push(line);
+    obj.disabled = true;
+    setTimeout(function() {
+        obj.disabled = false;
+    }, 1000);
 }
 
 function play(tone_id) {
