@@ -37,9 +37,10 @@ window.onload = function() {
 
 	    // By lines
 	    lines = this.result.split('\n');
-	    //for(var line = 0; line < lines.length; line++){
-	    //  console.log(lines[line]);
-	    //}
+	    // split each line into ID and text
+	    for(var line = 0; line < lines.length; line++){
+		lines[line]=lines[line].split('\t')
+	    }
 	};
 	reader.readAsText(file);
     };
@@ -62,26 +63,26 @@ function unlock_timestamps() {
     acceptButton.className= "button button_big button_accept";
     acceptButton.onclick = function () { addTimeStamp(this,'accept');
 					 increment_position();
-    }
+				       }
     var rejectButton=document.getElementById("reject-button");
     rejectButton.className= "button button_big button_reject";
     rejectButton.onclick = function () { addTimeStamp(this,'reject');
-    }
+				       }
     var otherButton=document.getElementById("other-button");
     otherButton.className= "button button_big button_other";
     otherButton.onclick = function () { addTimeStamp(this,'ohshoot');
-    }
+				      }
     var downloadButton=document.getElementById("download-button");
-    downloadButton.className= "button"
-    downloadButton.onClick = function () { download(document.getElementById('text').value)
-    }
+    downloadButton.className= "button";
+    downloadButton.onclick = function () { download(document.getElementById('text').value);
+					 }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// TEXT HANDLER FUNCTIONS /////////////////////////////////////////
 
 function get_line(pos) {
-    if (pos >= 0 && pos < lines.length) { return lines[pos]; }
+    if (pos >= 0 && pos < lines.length) { return lines[pos][1]; }
     else { return ""; }
 }
 
@@ -147,7 +148,7 @@ function foo() {
 }
 
 function addTimeStamp(obj,action) {
-    line=action+'\t'+(new Date().getTime())
+    line=action+'\t'+(new Date().getTime()+'\t'+lines[cur_pos][0])
     timestamps.push(line);
     obj.disabled = true;
     setTimeout(function() {
