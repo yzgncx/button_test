@@ -143,12 +143,22 @@ function download(sessionNotes) {
     document.body.removeChild(element);
 }
 
-function foo() {
-    console.log(timestamps)
+function msToTime(duration) {
+  var milliseconds = duration % 1000,
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
 function addTimeStamp(obj,action) {
-    line=action+'\t'+(new Date().getTime()+'\t'+lines[cur_pos][0])
+    timestamp=msToTime(new Date().getTime())
+    line=action+'\t'+(formatDate(new Date()) + ' ' + timestamp+'\t'+lines[cur_pos][0])
     timestamps.push(line);
     obj.disabled = true;
     setTimeout(function() {
