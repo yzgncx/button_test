@@ -44,9 +44,7 @@ window.onload = function() {
 	};
 	reader.readAsText(file);
     };
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
+}/////////////////////////////////////
 /////////////////////////////////// CSS UPDATER FUNCTIONS //////////////////////////////////////////
 
 function unlock_start_session() {
@@ -59,6 +57,13 @@ function unlock_start_session() {
 }
 
 function unlock_timestamps() {
+    var sessionButton=document.getElementById("session-button");
+    sessionButton.innerHTML = "<strong> Press button to end session </strong>";
+    sessionButton.onclick = function () { play('tone_440');
+					  download(document.getElementById('text').value);
+					  lock_timestamps();
+					}
+    
     var acceptButton=document.getElementById("accept-button");
     acceptButton.className= "button button_big button_accept";
     acceptButton.onclick = function () { addTimeStamp(this,'accept');
@@ -72,10 +77,26 @@ function unlock_timestamps() {
     otherButton.className= "button button_big button_other";
     otherButton.onclick = function () { addTimeStamp(this,'ohshoot');
 				      }
-    var downloadButton=document.getElementById("download-button");
-    downloadButton.className= "button";
-    downloadButton.onclick = function () { download(document.getElementById('text').value);
-					 }
+}
+
+function lock_timestamps() {
+    var acceptButton=document.getElementById("accept-button");
+    acceptButton.className= "button button_big button_disabled";
+    acceptButton.onclick = function () { }
+    var rejectButton=document.getElementById("reject-button");
+    rejectButton.className= "button button_big button_disabled";
+    rejectButton.onclick = function () { }
+    var otherButton=document.getElementById("other-button");
+    otherButton.className= "button button_big button_disabled";
+    otherButton.onclick = function () { }
+
+    var sessionButton=document.getElementById("session-button");
+    sessionButton.innerHTML = "<strong>Press button to start session</strong>";
+    sessionButton.onclick = function () { unlock_timestamps();
+					  play('tone_440');
+					  update_position(0);
+					}
+    
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
