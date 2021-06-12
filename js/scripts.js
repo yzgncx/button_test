@@ -41,6 +41,9 @@ window.onload = function() {
 	    for(var line = 0; line < lines.length; line++){
 		lines[line]=lines[line].split('\t')
 	    }
+	    if (lines.length > 1) {
+		lines.shift()
+	    }
 	};
 	reader.readAsText(file);
     };
@@ -112,10 +115,10 @@ function update_position(pos) {
 	return -1;
     }
     cur_pos = Number(pos);
-    document.getElementById("prev_line").innerHTML = (cur_pos-1) + "&emsp;&emsp;" + get_line(pos-1);
-    document.getElementById("cur_line").innerHTML = (cur_pos) + "&emsp;&emsp;" + get_line(pos);
-    document.getElementById("next_line").innerHTML = (cur_pos+1) + "&emsp;&emsp;" + get_line(pos+1);
-    document.getElementById("line_number").value = cur_pos;
+    document.getElementById("prev_line").innerHTML = (cur_pos > 0 ? cur_pos : "") + "&emsp;&emsp;" + get_line(pos-1); // line number hidden if no phrase displayed
+    document.getElementById("cur_line").innerHTML = (cur_pos+1) + "&emsp;&emsp;" + get_line(pos);
+    document.getElementById("next_line").innerHTML = (cur_pos+2 <= lines.length ? cur_pos+2 : "") + "&emsp;&emsp;" + get_line(pos+1);
+    document.getElementById("line_number").value = cur_pos+1; // all displayed numbers are shifted +1 to hide zero-indexing from end user.
     return 0;
 }
 
